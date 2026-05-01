@@ -25,11 +25,11 @@ export default function Authentication() {
 
     
 
-    const [username, setUsername] = React.useState();
-    const [password, setPassword] = React.useState();
-    const [name, setName] = React.useState();
-    const [error, setError] = React.useState();
-    const [message, setMessage] = React.useState();
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [name, setName] = React.useState("");
+    const [error, setError] = React.useState("");
+    const [message, setMessage] = React.useState("");
 
 
     const [formState, setFormState] = React.useState(0);
@@ -73,12 +73,10 @@ export default function Authentication() {
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
                     sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+                        display: { xs: 'none', sm: 'block' },
+                        flex: '0 0 58.33%',
+                        backgroundImage: 'url(/background.png)',
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -86,7 +84,7 @@ export default function Authentication() {
                         backgroundPosition: 'center',
                     }}
                 />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid sx={{ flex: '1 1 auto' }} component={Paper} elevation={6} square>
                     <Box
                         sx={{
                             my: 8,

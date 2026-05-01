@@ -1,5 +1,4 @@
 import axios from "axios";
-import httpStatus from "http-status";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import server from "../environment";
@@ -22,7 +21,7 @@ client.interceptors.response.use(
     (error) => {
         // This function will be defined later, so we need a way to access it.
         // We will attach it to the client instance after it's created.
-        if (error.response?.status === httpStatus.UNAUTHORIZED && client.handleLogout) {
+        if (error.response?.status === 401 && client.handleLogout) {
             client.handleLogout();
         }
         return Promise.reject(error);
@@ -39,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     const handleLogout = useCallback(() => {
         localStorage.removeItem("token");
         setUser(null);
-        router("/login", { replace: true });
+        router("/auth", { replace: true });
     }, [router]);
 
     // Make handleLogout available to the interceptor
@@ -78,7 +77,7 @@ export const AuthProvider = ({ children }) => {
                 password
             });
 
-            if (response.status === httpStatus.CREATED) {
+            if (response.status === 201) {
                 return { success: true, message: response.data.message };
             }
         } catch (err) {
@@ -98,8 +97,8 @@ export const AuthProvider = ({ children }) => {
                 password
             });
 
-            if (response.status === httpStatus.OK) {
-                const { token, user: userData } = response.data; // Assuming login returns user data
+            if (response.status === 200) {
+                const { token, user: userData } = response.data;
                 localStorage.setItem("token", token);
                 setUser(userData);
                 router("/home", { replace: true });

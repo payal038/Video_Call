@@ -42,26 +42,28 @@ export default function Authentication() {
     let handleAuth = async () => {
         try {
             if (formState === 0) {
-
-                let result = await handleLogin(username, password)
-
-
+                let result = await handleLogin(username, password);
+                if (result && !result.success) {
+                    setError(result.error || "Login failed");
+                }
             }
             if (formState === 1) {
                 let result = await handleRegister(name, username, password);
-                console.log(result);
-                setUsername("");
-                setMessage(result);
-                setOpen(true);
-                setError("")
-                setFormState(0)
-                setPassword("")
+                if (result && result.success) {
+                    setUsername("");
+                    setPassword("");
+                    setName("");
+                    setMessage("Registration successful! Please sign in.");
+                    setOpen(true);
+                    setError("");
+                    setFormState(0);
+                } else {
+                    setError(result?.error || "Registration failed");
+                }
             }
         } catch (err) {
-
             console.log(err);
-            let message = (err.response.data.message);
-            setError(message);
+            setError(err?.response?.data?.message || "Something went wrong");
         }
     }
 
